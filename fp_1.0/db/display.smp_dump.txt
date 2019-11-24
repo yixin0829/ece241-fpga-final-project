@@ -1,0 +1,9 @@
+
+State Machine - |display|ctrlpath:m1|current_state
+Name current_state.S_RESET_SIG_Y current_state.S_INCR_Y current_state.S_RESET_SIG_X current_state.S_DISPLAY_ROW current_state.S_WAIT current_state.S_IDLE 
+current_state.S_IDLE 0 0 0 0 0 0 
+current_state.S_WAIT 0 0 0 0 1 1 
+current_state.S_DISPLAY_ROW 0 0 0 1 0 1 
+current_state.S_RESET_SIG_X 0 0 1 0 0 1 
+current_state.S_INCR_Y 0 1 0 0 0 1 
+current_state.S_RESET_SIG_Y 1 0 0 0 0 1 
