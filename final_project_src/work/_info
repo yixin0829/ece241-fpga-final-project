@@ -1,0 +1,310 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d//SRVA/Homes$$/tianyix2/Desktop/fp_4.1
+vaddress_adaptor
+Z1 !s110 1574825072
+!i10b 1
+!s100 1gX8GGN@FMUnOTeF6`A@X0
+IL@Xc?Af_iOTQT5aQ8NilW2
+Z2 VDg1SIo80bB@j0V0VzS_@n1
+R0
+Z3 w1574823936
+Z4 8display.v
+Z5 Fdisplay.v
+L0 260
+Z6 OV;L;10.5b;63
+r1
+!s85 0
+31
+Z7 !s108 1574825072.000000
+Z8 !s107 vga_adaptor.v|menu_ram.v|image_ram.v|registers.v|image_process.v|display.v|
+Z9 !s90 -reportprogress|300|display.v|image_process.v|registers.v|image_ram.v|menu_ram.v|vga_adaptor.v|
+!i113 1
+Z10 tCvgOpt 0
+vbox_blur
+Z11 !s110 1574825073
+!i10b 1
+!s100 3DnfZOSh`LhGV6?oIK6cY1
+IPD:0VA99d1KLeZcOUnJDO0
+R2
+R0
+Z12 w1574808426
+Z13 8image_process.v
+Z14 Fimage_process.v
+L0 248
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 1
+R10
+vbright_add
+R11
+!i10b 1
+!s100 ;=2og7]hMfg75Unln]bJS1
+Iia8XXdXVjPQ<E8EFC^8iY2
+R2
+R0
+R12
+R13
+R14
+L0 132
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 1
+R10
+vctrlpath
+R1
+!i10b 1
+!s100 1`R29<3eO1mf8@19:0;[d3
+Ilh`@h@aDMfO7XlZho3E=>1
+R2
+R0
+R3
+R4
+R5
+L0 295
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 1
+R10
+vdarken
+R11
+!i10b 1
+!s100 41^JZj]A>gl?WJW8LK^[a0
+Ijg>RJC=LAA<bzFkD1V;0@0
+R2
+R0
+R12
+R13
+R14
+L0 190
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 1
+R10
+vdatapath
+R1
+!i10b 1
+!s100 z8n@7LRhD[3ilL:Gda;L^2
+I2dIi^L:W5Kf`I@69o4?_l3
+R2
+R0
+R3
+R4
+R5
+L0 135
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 1
+R10
+vdisplay
+R1
+!i10b 1
+!s100 TX^UA3O_]GcXV0P@R3?_C1
+I_CPZ7G2ac@g9B>gCVa6lb2
+R2
+R0
+R3
+R4
+R5
+L0 1
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 1
+R10
+vedge_detection
+R11
+!i10b 1
+!s100 DGZAP8PDJofiI]4lO2`NF3
+I<?Pm1KmZVHbhIkg;j=jPW1
+R2
+R0
+R12
+R13
+R14
+L0 380
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 1
+R10
+vemboss
+R11
+!i10b 1
+!s100 PSXhGBX0[lP]BC;IZZ9gA0
+I6hFKcz891AjJ@Ba<Z>gOZ3
+R2
+R0
+R12
+R13
+R14
+L0 461
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 1
+R10
+vgaussian_blur
+R11
+!i10b 1
+!s100 R55`SPP4<K]=PPR0EHESi3
+Ig7I5cI64ocXT@<icCJ8kL0
+R2
+R0
+R12
+R13
+R14
+L0 308
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 1
+R10
+vgrey_scale
+R11
+!i10b 1
+!s100 IEm7NTUT[4M569Pj9Tifo2
+I[gUTlm[5cbYVfG=24:83;1
+R2
+R0
+R12
+R13
+R14
+L0 112
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 1
+R10
+vimage_process
+R11
+!i10b 1
+!s100 EoXUJC<Ha7LI6UKHIED;W2
+Io^FYlMD6jS52M6QUEOjVF1
+R2
+R0
+R12
+R13
+R14
+L0 3
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 1
+R10
+vimage_ram
+R11
+!i10b 1
+!s100 6;AEaaVOh[G9AjOCW`GbS2
+I0>_6YF7oN=^X<Q=F7`jnI1
+R2
+R0
+w1574719760
+8image_ram.v
+Fimage_ram.v
+Z15 L0 39
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 1
+R10
+vmenu_ram
+R11
+!i10b 1
+!s100 bQkQd^j5@XLDI;gZTIco02
+ImPKSFC]ZR=PCknP6FKA:L0
+R2
+R0
+w1574824130
+8menu_ram.v
+Fmenu_ram.v
+R15
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 1
+R10
+vpixel_register
+R11
+!i10b 1
+!s100 jB_U26gS:7WFXoN>_VR^K3
+IQgHc7GlDQDh>_=cCQ9l>A1
+R2
+R0
+w1574725711
+8registers.v
+Fregisters.v
+L0 2
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 1
+R10

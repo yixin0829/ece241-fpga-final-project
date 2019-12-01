@@ -1,6 +1,0 @@
-Issues:
-
-1) when compile with gaussian blur module the report shows can't fit all the RAMs but I only have one RAM, just calling it 9 times inside the module
-2) the first, second col pixel on VGA is not reading correctly
-3) infinite loop (i.e the filter changes as we change the swiches)
-

@@ -1,4 +1,0 @@
-Warning (10268): Verilog HDL information at display.v(135): always construct contains both blocking and non-blocking assignments File: //SRVA/Homes$/tianyix2/Desktop/fp_3.3/display.v Line: 135
-Warning (10268): Verilog HDL information at display.v(155): always construct contains both blocking and non-blocking assignments File: //SRVA/Homes$/tianyix2/Desktop/fp_3.3/display.v Line: 155
-Info (10281): Verilog HDL Declaration information at display.v(294): object "CONTRAST" differs only in case from object "contrast" in the same scope File: //SRVA/Homes$/tianyix2/Desktop/fp_3.3/display.v Line: 294
-Info (10281): Verilog HDL Declaration information at display.v(295): object "BLUR" differs only in case from object "blur" in the same scope File: //SRVA/Homes$/tianyix2/Desktop/fp_3.3/display.v Line: 295
