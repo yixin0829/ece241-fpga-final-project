@@ -1,13 +1,13 @@
-Analysis & Synthesis Status : Successful - Fri Nov 29 16:40:18 2019
-Quartus Prime Version : 18.0.0 Build 614 04/24/2018 SJ Standard Edition
+Analysis & Synthesis Status : Successful - Sun Dec 01 16:05:45 2019
+Quartus Prime Version : 18.1.0 Build 625 09/12/2018 SJ Lite Edition
 Revision Name : display
 Top-level Entity Name : display
 Family : Cyclone V
 Logic utilization (in ALMs) : N/A
-Total registers : 296
+Total registers : 295
 Total pins : 44
 Total virtual pins : 0
-Total block memory bits : 2,976,600
+Total block memory bits : 2,501,400
 Total DSP Blocks : 3
 Total HSSI RX PCSs : 0
 Total HSSI PMA RX Deserializers : 0

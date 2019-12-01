@@ -1,7 +1,9 @@
 module display
 	(
 		CLOCK_50,						//	On Board 50 MHz
-		KEY, SW,	
+		// Your inputs and outputs here
+		KEY, SW,	// On Board Keys
+		// The ports below are for the VGA output.  Do not change.
 		VGA_CLK,   						//	VGA Clock
 		VGA_HS,							//	VGA H_SYNC
 		VGA_VS,							//	VGA V_SYNC
@@ -15,6 +17,8 @@ module display
 	input			CLOCK_50;				//	50 MHz
 	input	[3:0]	KEY;
 	input [9:0] SW;
+	// Declare your inputs and outputs here
+	// Do not change the following outputs
 	output			VGA_CLK;   				//	VGA Clock
 	output			VGA_HS;					//	VGA H_SYNC
 	output			VGA_VS;					//	VGA V_SYNC
@@ -34,7 +38,9 @@ module display
 	wire [7:0] y;
 	wire writeEn;
 
-
+	// Create an Instance of a VGA controller - there can be only one!
+	// Define the number of colours as well as the initial background
+	// image file (.MIF) for the controller.
 	vga_adapter VGA(
 			.resetn(resetn),
 			.clock(CLOCK_50),
@@ -54,20 +60,18 @@ module display
 		defparam VGA.RESOLUTION = "320x240";
 		defparam VGA.MONOCHROME = "FALSE";
 		defparam VGA.BITS_PER_COLOUR_CHANNEL = 8;
-		defparam VGA.BACKGROUND_IMAGE = "sum.mif";
+		defparam VGA.BACKGROUND_IMAGE = "black.mif";
 			
-	// control signals from ctrl path to data path
-	wire plot, rowCountEn, colCountEn, reset_sig_x, reset_sig_y; 
+	// Put your code here. Your code should produce signals x,y,colour and writeEn
+	// for the VGA controller, in addition to any other functionality your design may require.
+	
+	wire plot, rowCountEn, colCountEn, reset_sig_x, reset_sig_y, row_done, col_done;
 	wire ld_0, ld_1, ld_2, ld_3, ld_4, ld_5, ld_6, ld_7, ld_8;
-	wire menu;
-	
-	// feed control signals from data path to ctrl
-	wire row_done, col_done;
-	
+	wire [2:0] sel_im;
 	wire [4:0] filter;
 	wire [3:0] sel_address;
 	
-	datapath m0(.clock(CLOCK_50),
+	datapath2 m0(.clock(CLOCK_50),
 					.resetn(resetn),
 					.rowCountEn(rowCountEn),
 					.colCountEn(colCountEn),
@@ -84,8 +88,8 @@ module display
 					.ld_6(ld_6),
 					.ld_7(ld_7),
 					.ld_8(ld_8),
-					.menu(menu),
 					.sel_address(sel_address),
+					.sel_im(sel_im),
 					.row_done(row_done),
 					.col_done(col_done),
 					.x_out(x),
@@ -115,8 +119,8 @@ module display
 					.ld_6(ld_6),
 					.ld_7(ld_7),
 					.ld_8(ld_8),
-					.menu(menu),
-					.sel_address(sel_address));
+					.sel_address(sel_address),
+					.sel_im(sel_im));
 					
 	
 endmodule
@@ -130,7 +134,7 @@ endmodule
 */
 
 // Data path2 for Guassian blur, Sobel edge detection
-module datapath(
+module datapath2(
 	input clock, resetn,
 	input rowCountEn,
 	input colCountEn,
@@ -138,7 +142,7 @@ module datapath(
 	input reset_sig_x,
 	input reset_sig_y,
 	input ld_0, ld_1, ld_2, ld_3, ld_4, ld_5, ld_6, ld_7, ld_8, // register enable signals
-	input menu,
+	input [2:0]sel_im,
 	input [3:0]sel_address,
 	input [4:0]filter,
 	output reg row_done,
@@ -152,8 +156,9 @@ module datapath(
 	reg [7:0]y;
 	wire [23:0]c0, c1, c2, c3, c4, c5, c6, c7, c8;
 	wire [16:0]address;
-	wire [23:0]ram_colour, menu_colour;
-	reg [23:0]reg_colour;
+	reg [23:0]ram_colour;
+	wire [23:0]colour_im, colour_im2;
+	wire [8:0]colour_mu;
 	
 	
 	// x-8bit counter
@@ -202,33 +207,36 @@ module datapath(
 	address_adaptor a0(.x(x), .y(y), .sel(sel_address), .address(address));
 	
 	// read the colour from the ram and store in ram_colour wire
-	image_ram m0(.address(address), .clock(clock), .data(24'd0), .wren(1'b0), .q(ram_colour));
+	image_ram m0(.address(address), .clock(clock), .data(24'd0), .wren(1'b0), .q(colour_im));
 	
-	// read the colour from the ram and store in menur_colour wire
-	menu_ram m1(.address(address), .clock(clock), .data(24'd0), .wren(1'b0), .q(menu_colour));
+	image2_ram m1(.address(address), .clock(clock), .data(24'd0), .wren(1'b0), .q(colour_im2));
+	
+	mu_ram m2(.address(address), .clock(clock), .data(24'd0), .wren(1'b0), .q(colour_mu));
 	
 	// case statement for select read colour from which RAMs
 	always@(*)begin
-		case(menu)
-		1'b0: reg_colour = ram_colour;
-		1'b1: reg_colour = menu_colour;
-		default: reg_colour = menu_colour;
+		case(sel_im)
+		3'd0: ram_colour = colour_im; //000
+		3'd1: ram_colour = colour_im2; //001
+		3'd2: ram_colour = {15'd0, colour_mu}; //010
+		default: ram_colour = colour_im;
 		endcase
 	end
 	
+	
 	// 9 registers while will hold the 9 pixels of colour
-	pixel_register r0(.resetn(resetn), .clock(clock), .enable(ld_0), .colour_i(reg_colour), .colour_o(c0));
-	pixel_register r1(.resetn(resetn), .clock(clock), .enable(ld_1), .colour_i(reg_colour), .colour_o(c1));
-	pixel_register r2(.resetn(resetn), .clock(clock), .enable(ld_2), .colour_i(reg_colour), .colour_o(c2));
-	pixel_register r3(.resetn(resetn), .clock(clock), .enable(ld_3), .colour_i(reg_colour), .colour_o(c3));
-	pixel_register r4(.resetn(resetn), .clock(clock), .enable(ld_4), .colour_i(reg_colour), .colour_o(c4));
-	pixel_register r5(.resetn(resetn), .clock(clock), .enable(ld_5), .colour_i(reg_colour), .colour_o(c5));
-	pixel_register r6(.resetn(resetn), .clock(clock), .enable(ld_6), .colour_i(reg_colour), .colour_o(c6));
-	pixel_register r7(.resetn(resetn), .clock(clock), .enable(ld_7), .colour_i(reg_colour), .colour_o(c7));
-	pixel_register r8(.resetn(resetn), .clock(clock), .enable(ld_8), .colour_i(reg_colour), .colour_o(c8));
+	pixel_register r0(.resetn(resetn), .clock(clock), .enable(ld_0), .colour_i(ram_colour), .colour_o(c0));
+	pixel_register r1(.resetn(resetn), .clock(clock), .enable(ld_1), .colour_i(ram_colour), .colour_o(c1));
+	pixel_register r2(.resetn(resetn), .clock(clock), .enable(ld_2), .colour_i(ram_colour), .colour_o(c2));
+	pixel_register r3(.resetn(resetn), .clock(clock), .enable(ld_3), .colour_i(ram_colour), .colour_o(c3));
+	pixel_register r4(.resetn(resetn), .clock(clock), .enable(ld_4), .colour_i(ram_colour), .colour_o(c4));
+	pixel_register r5(.resetn(resetn), .clock(clock), .enable(ld_5), .colour_i(ram_colour), .colour_o(c5));
+	pixel_register r6(.resetn(resetn), .clock(clock), .enable(ld_6), .colour_i(ram_colour), .colour_o(c6));
+	pixel_register r7(.resetn(resetn), .clock(clock), .enable(ld_7), .colour_i(ram_colour), .colour_o(c7));
+	pixel_register r8(.resetn(resetn), .clock(clock), .enable(ld_8), .colour_i(ram_colour), .colour_o(c8));
 	
 	// new image process module
-	image_process m2(
+	image_process m3(
 		.filter(filter),
 		.colour_i0(c0),
 		.colour_i1(c1),
@@ -303,17 +311,18 @@ module ctrlpath(
 	output reg reset_sig_y,
 	output reg ld_0, ld_1, ld_2, ld_3, ld_4, ld_5, ld_6, ld_7, ld_8,
 	output reg [3:0]sel_address,
-	output menu,
+	output [2:0]sel_im,
 	output [4:0]filter);
 	
-	assign menu = SW[9];
+
 	reg [5:0] current_state, next_state;
 	
 	localparam 
+		// states for reading pixels from the image
 		S_IDLE = 6'd0,
 		S_WAIT_KEY = 6'd1,
 		S_LD0 = 6'd2,
-		//S_WAIT_C0 = 6'd3,
+		S_WAIT_C0 = 6'd3,
 		S_LD1 = 6'd4,
 		S_WAIT_C1 = 6'd5,
 		S_LD2 = 6'd6,
@@ -335,13 +344,18 @@ module ctrlpath(
 		S_RESET_SIG = 6'd22,
 		S_INCR_Y = 6'd23,
 		S_WAIT_STABLE = 6'd24;
+		
 	
 	// State table
 	always@(*)begin
 		
 		case(current_state)
-			S_IDLE: next_state = KEY[1] ? S_IDLE : S_WAIT_KEY;
-			S_WAIT_KEY: next_state = KEY[1] ? S_LD0 : S_WAIT_KEY;
+		
+		
+		S_IDLE: next_state = KEY[1] ? S_IDLE : S_WAIT_KEY;
+			
+			S_WAIT_KEY: next_state = KEY[1] ? S_LD0 : S_WAIT_C0;
+			S_WAIT_C0: next_state =  S_LD0;
 			
 			S_LD0: next_state = S_WAIT_C1;
 			S_WAIT_C1: next_state = S_LD1;
@@ -401,63 +415,83 @@ module ctrlpath(
 		reset_sig_x = 1'b1;
 		reset_sig_y = 1'b1;
 		end
+		
+		
+		// for drawing the pic
 		S_LD0:begin
 		ld_0 = 1'b1;
 		sel_address = 4'd0;
 		end
+		
+
 		S_LD1:begin
 		ld_1 = 1'b1;
 		sel_address = 4'd1;
 		end
+		
+
 		S_LD2:begin
 		ld_2 = 1'b1;
 		sel_address = 4'd2;
 		end
+		
+
 		S_LD3:begin
 		ld_3 = 1'b1;
 		sel_address = 4'd3;
 		end
+		
 		S_LD4:begin
 		ld_4 = 1'b1;
 		sel_address = 4'd4;
 		end
+		
 		S_LD5:begin
 		ld_5 = 1'b1;
 		sel_address = 4'd5;
 		end
+		
 		S_LD6:begin
 		ld_6 = 1'b1;
 		sel_address = 4'd6;
 		end
+		
+
 		S_LD7:begin
 		ld_7 = 1'b1;
 		sel_address = 4'd7;
 		end
+		
 		S_LD8:begin
 		ld_8 = 1'b1;
 		sel_address = 4'd8;
 		end
+		
 		S_DISPLAY:begin
 		plot = 1'b1;
 		end
+		
 		S_INCR_X:begin
 		rowCountEn = 1'b1;
 		end
+		
 		S_RESET_SIG:begin
 		reset_sig_x = 1'b1;
 		reset_sig_y = 1'b1;
 		end
+		
 		S_INCR_Y:begin
 		colCountEn = 1'b1;
 		end
+		
 		endcase
 	end
 	
 	
 	
-	// Direct assignment
+	// Direct assignment 
 	assign filter = SW[4:0];
-	
+	assign sel_im = SW[9:7];
 	
 	// current_state registers
     always@(posedge clock)

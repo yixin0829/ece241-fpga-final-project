@@ -1,3 +1,3 @@
-Info (10281): Verilog HDL Declaration information at image_process.v(30): object "EMBOSS" differs only in case from object "emboss" in the same scope File: //SRVA/Homes$/tianyix2/Desktop/fp_4.1/image_process.v Line: 30
-Warning (10268): Verilog HDL information at display.v(165): always construct contains both blocking and non-blocking assignments File: //SRVA/Homes$/tianyix2/Desktop/fp_4.1/display.v Line: 165
-Warning (10268): Verilog HDL information at display.v(185): always construct contains both blocking and non-blocking assignments File: //SRVA/Homes$/tianyix2/Desktop/fp_4.1/display.v Line: 185
+Info (10281): Verilog HDL Declaration information at image_process.v(30): object "EMBOSS" differs only in case from object "emboss" in the same scope File: C:/Users/Yixin/Desktop/fpga_final_project/final_project_src/image_process.v Line: 30
+Warning (10268): Verilog HDL information at display.v(160): always construct contains both blocking and non-blocking assignments File: C:/Users/Yixin/Desktop/fpga_final_project/final_project_src/display.v Line: 160
+Warning (10268): Verilog HDL information at display.v(180): always construct contains both blocking and non-blocking assignments File: C:/Users/Yixin/Desktop/fpga_final_project/final_project_src/display.v Line: 180
